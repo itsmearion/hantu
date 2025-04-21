@@ -57,18 +57,40 @@ async def format_button(client, callback_query):
     try:
         await callback_query.answer()
         username = callback_query.from_user.username or "username"
+        
         text = (
-            f"**Copy and Paste This:**\n\n"
-            f"```\n"
-            f"Salutations I'm @{username}, I’d like to place an order for catalog [t.me/blakeshley] listed at Blakeshley, "
+            f"<b>Copy and Paste This:</b>\n\n"
+            f"<code>\n"
+            f"Salutations I'm @{username}, I’d like to place an order for catalog t.me/blakeshley listed at Blakeshley, "
             f"Using payment method [dana, gopay, qriss, spay, ovo, bank.] "
             f"The total comes to IDR [00.000] Inrush add 5k [yay/nay]. "
             f"Kindly process this, Thanks a bunch."
-            f"\n```"
+            f"</code>"
         )
-        await callback_query.message.reply_text(text, parse_mode="Markdown")
+        
+        # Kirim format text
+        sent = await callback_query.message.reply_text(text, parse_mode="HTML")
+
+        # Tunggu 7 menit (420 detik)
+        await asyncio.sleep(200)
+
+        # Hapus format text
+        await sent.delete()
+
+        # Hapus pesan tombol "Format your wishes" (kalau masih ada)
+        try:
+            await callback_query.message.delete()
+        except Exception as e:
+            logging.warning(f"Failed to delete button message: {e}")
+
+        # Kirim pesan efek "magic fades"
+        await client.send_message(
+            callback_query.message.chat.id,
+            "༄ the magic fades into the mist... ༄"
+        )
+
     except Exception as e:
-        logging.error(f"Error sending format: {e}")
+        logging.error(f"Error in format button flow: {e}")
 
 # --- Handle Kirim Order dari User ---
 @app.on_message(filters.private & filters.text)
