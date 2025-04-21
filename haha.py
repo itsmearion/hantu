@@ -6,10 +6,10 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from PIL import Image, ImageDraw
 
 # --- CONFIGURATION ---
-API_ID = 12345678  # Ganti dengan API_ID kamu
-API_HASH = "your_api_hash_here"  # Ganti dengan API_HASH kamu
-BOT_TOKEN = "your_bot_token_here"  # Ganti dengan BOT_TOKEN kamu
-ADMIN_GROUP_ID = -1001234567890  # Ganti dengan ID grup admin kamu (harus negatif)
+API_ID = 23710720  # Ganti dengan API_ID kamu
+API_HASH = "6dee0b9148b607f8a9868dc180d219cc"  # Ganti dengan API_HASH kamu
+BOT_TOKEN = "7955360080:AAGTrfGifY3DYBsyUCwo7Fv59m8UZRrbpA4"  # Ganti dengan BOT_TOKEN kamu
+ADMIN_GROUP_ID = -1002311076740  # Ganti dengan ID grup admin kamu (harus negatif)
 
 ASSETS_DIR = 'assets'
 HOURGLASS_PATH = os.path.join(ASSETS_DIR, 'hourglass.gif')
