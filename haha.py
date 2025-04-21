@@ -5,11 +5,11 @@ from utils import save_message_mapping, load_message_mappings, delay_notice, che
 import logging
 
 # Konfigurasi Bot
-API_ID = int("ISI_API_ID_MU")
-API_HASH = "ISI_API_HASH_MU"
-BOT_TOKEN = "ISI_BOT_TOKEN_MU"
-TARGET_GROUP_ID = -1001234567890  # ID grup tujuan
-STICKER_ID = "CAACAgUAAxkBAAEKQe9lH1Wem-tw3EshOa8v..."  # ID Sticker aesthetic
+API_ID = int("23710720")
+API_HASH = "6dee0b9148b607f8a9868dc180d219cc"
+BOT_TOKEN = "7955360080:AAGjqYkBIshyrTYd1xWHIFgeqsIncnO6r3s"
+TARGET_GROUP_ID = -1002311076740  # ID grup tujuan
+STICKER_ID = "CAACAgIAAxkBAAE0Ak5oBoV9UOnECM09QrJsJZzlnau_9wAC0wADlp-MDhtJv7qBP3auNgQ"  # ID Sticker aesthetic
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)
