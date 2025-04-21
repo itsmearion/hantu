@@ -58,32 +58,38 @@ async def format_button(client, callback_query):
         await callback_query.answer()
         username = callback_query.from_user.username or "username"
         
+        # Isi text format
         text = (
-            f"<b>Copy and Paste This:</b>\n\n"
-            f"<code>\n"
             f"Salutations I'm @{username}, I’d like to place an order for catalog t.me/blakeshley listed at Blakeshley, "
             f"Using payment method [dana, gopay, qriss, spay, ovo, bank.] "
             f"The total comes to IDR [00.000] Inrush add 5k [yay/nay]. "
             f"Kindly process this, Thanks a bunch."
-            f"</code>"
         )
+
+        # Kirim teks format + button "Copy Here"
+        keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton("ᯓ ✎ Copy Here", switch_inline_query_current_chat=text)]
+        ])
         
-        # Kirim format text
-        sent = await callback_query.message.reply_text(text, parse_mode="HTML")
+        sent = await callback_query.message.reply_text(
+            f"<b>Copy and Paste This:</b>\n\n<code>{text}</code>",
+            parse_mode="HTML",
+            reply_markup=keyboard
+        )
 
         # Tunggu 7 menit (420 detik)
-        await asyncio.sleep(200)
+        await asyncio.sleep(420)
 
-        # Hapus format text
+        # Hapus pesan format + tombol
         await sent.delete()
 
-        # Hapus pesan tombol "Format your wishes" (kalau masih ada)
+        # Hapus pesan tombol "Format your wishes"
         try:
             await callback_query.message.delete()
         except Exception as e:
             logging.warning(f"Failed to delete button message: {e}")
 
-        # Kirim pesan efek "magic fades"
+        # Kirim efek magic fades
         await client.send_message(
             callback_query.message.chat.id,
             "༄ the magic fades into the mist... ༄"
