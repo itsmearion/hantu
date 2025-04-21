@@ -1,48 +1,46 @@
 import json
 import os
 import asyncio
+import logging
 
 DATA_DIR = 'data'
-MESSAGE_MAP_FILE = os.path.join(DATA_DIR, 'message_map.json')
+MAPPINGS_FILE = os.path.join(DATA_DIR, 'mappings.json')
 
-# Bikin folder data kalau belum ada
-os.makedirs(DATA_DIR, exist_ok=True)
+# Pastikan folder data ada
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
 
-# --- Save relasi pesan ---
 def save_message_mapping(user_id, user_message_id, group_message_id):
-    try:
-        if not os.path.exists(MESSAGE_MAP_FILE):
-            data = {}
-        else:
-            with open(MESSAGE_MAP_FILE, 'r') as f:
-                data = json.load(f)
-        data[str(user_id)] = {
-            "user_message_id": user_message_id,
-            "group_message_id": group_message_id
-        }
-        with open(MESSAGE_MAP_FILE, 'w') as f:
-            json.dump(data, f, indent=4)
-    except Exception as e:
-        print(f"Error save mapping: {e}")
+    mappings = load_message_mappings()
+    mappings[str(user_id)] = {
+        "user_message_id": user_message_id,
+        "group_message_id": group_message_id
+    }
+    with open(MAPPINGS_FILE, "w") as f:
+        json.dump(mappings, f, indent=4)
 
-# --- Load semua relasi ---
 def load_message_mappings():
-    if not os.path.exists(MESSAGE_MAP_FILE):
+    if not os.path.exists(MAPPINGS_FILE):
         return {}
-    with open(MESSAGE_MAP_FILE, 'r') as f:
+    with open(MAPPINGS_FILE, "r") as f:
         return json.load(f)
 
-# --- Delay notice jika admin ga bales ---
-async def delay_notice(client, chat_id, original_message_id):
+async def delay_notice(client, group_id, group_message_id):
+    await asyncio.sleep(300)  # 5 menit
     try:
-        await asyncio.sleep(300)  # 5 menit
-        mappings = load_message_mappings()
-        for user_id, message_ids in mappings.items():
-            if message_ids["group_message_id"] == original_message_id:
-                await client.send_message(
-                    chat_id,
-                    "ᯓ ᡣ𐭩 the stars are still — our admin is away for a moment...\nplease wait in the calm, your message will find its way ᡣ𐭩ᡣ𐭩"
-                )
-                break
+        await client.send_message(
+            group_id,
+            f"ᯓ 𖤓 the stars hold their breath ~ admin is adrift beyond dreams ~ please wait kindly ᯓ",
+            reply_to_message_id=group_message_id
+        )
     except Exception as e:
-        print(f"Error delay notice: {e}")
+        logging.error(f"Delay notice error: {e}")
+
+async def check_sticker(client, sticker_id):
+    try:
+        test = await client.send_sticker("me", sticker_id)
+        await asyncio.sleep(1)
+        await test.delete()
+        return True
+    except Exception:
+        return False
